@@ -69,7 +69,7 @@ export default function Home() {
             Tasks List
           </div>
           <div className="mx-5 mt-2 text-3xl font-sans border-black border-[5px] rounded-xl">
-            {tasks.map((task, indexOfTask) => (
+            {tasks.length>0 ? (tasks.map((task, indexOfTask) => (
               <div 
                 key={uuidv4()}
                 className="flex justify-between items-center px-4 py-2"
@@ -88,7 +88,9 @@ export default function Home() {
                   <img className="w-[50px] h-[50px]" src="/delete.png" alt="Delete" />
                 </button>
               </div>
-            ))}
+            ))) : (
+              <div className="text-center text-xl p-4">No tasks added</div>
+            )}
           </div>
         </div>
 
