@@ -1,9 +1,14 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import HelpMe from "./component/helpMe";
 
 export default function Home() {
+  
+  const [isModalOpen, setModalOpen] = useState(false);
+  const helpMeButtonRef = useRef(null);
+
   const [tasks, setTasks] = useState([
     "Hitesh Sir ko Chai pilana hai",
     "Piyush sir ko lemon tea pilana hai",
@@ -18,6 +23,23 @@ export default function Home() {
   const [editValue, setEditValue] = useState("");
 
   const colors = ["#FF6F61", "#FFEA00", "#FFB3BA", "#A8D8EA", "#00CED1"];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setModalOpen(true);
+    }, 10000); // Show modal after 10 seconds
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, []);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    helpMeButtonRef.current?.focus(); // Restore focus to "Help Me" button
+  };
 
   const addTask = () => {
     if (inputValue.trim() !== "") {
@@ -165,8 +187,10 @@ export default function Home() {
           </div>
         </div>
         {/*Footer*/}
-        <div className="flex justify-center text-xl font-semibold">
-          Made with ❤️ by&nbsp;<u><a className="text-blue-500" href="https://x.com/iamZBRais" target="_blank">ZBRais</a></u>
+        <div className="flex flex-nowrap justify-center text-xl font-semibold">
+          <p>You can help me by&nbsp;<button ref={helpMeButtonRef} className="text-red-400 px-2 rounded-lg border border-dotted" onClick={openModal}>Donate</button></p>
+          <p>and Follow Me&nbsp;<u><a className="text-blue-500" href="https://x.com/iamZBRais" target="_blank">ZBRais</a></u></p>
+          <HelpMe isOpen={isModalOpen} onClose={closeModal} />
         </div>
       </div>
   );
